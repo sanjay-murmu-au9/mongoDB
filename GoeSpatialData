@@ -1,0 +1,77 @@
+# Geospatial Queries
+	1. Storing Geospatial Data in GeoJSON Format
+	2. Querying Geospatial Data
+
+
+1. Storing Geospatial Data in GeoJSON Format
+# db.places.insertOne({name:"Califorina Acedemy of Science",
+	location:{type:"Point",coordinates:[-122.4724356,37.7672]}})
+
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("61d6ef77c9877f6dd089a30f")
+}
+db.places.findOne()
+{
+        "_id" : ObjectId("61d6ef77c9877f6dd089a30f"),
+        "name" : "California Acedemy ofScience",
+        "location" : {
+                "type" : "Point",
+                "coordinates" : [
+                        -122.4724356,
+                        37.7672
+                ]
+        }
+}
+
+$near:- to work with Geosparcial data; 
+
+db.places.createIndex({location:"2dsphere"})
+
+db.places.find({
+    location:
+    {
+        $near: {
+            $geometry:
+            {
+                type: "Point",
+                coordinates: [-122.4724356, 37.7672]
+            },
+            $maxDistance: 10000000000, $minDistance: 10
+        }
+    }
+}).pretty()
+
+{
+        "_id" : ObjectId("61c0c735038bd9f2591599c1"),
+        "name" : "Califorina Acedemy of Science",
+        "location" : {
+                "type" : "Point",
+                "coordinates" : [
+                        77.6652401,
+                        12.9245274
+                ]
+        }
+}
+
+
+
+===================XXXX===================
+Module Summary:-
+	Storing Geospatial Data
+1. You store geospatial data next to your other data in your documents.
+2. Geospatial data has to follow the special GeoJSON format - and respect
+	 the types supported by MongoDB
+
+3. Don't forget that the coordinates are [longitude, latitude] not the other way around.
+
+
+# Geospatial Indexes
+	1. You can add an index to geospatial data; "2dsphere"
+	2. Some operations ($near) require such an index
+
+# Geospatial Queries
+	1. $near, $geoWithin and $geoIntersects get you very far
+	2. Geospatial queries work with GeoJSON data
+
+* latitude then longitude
