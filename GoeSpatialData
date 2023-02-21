@@ -54,6 +54,25 @@ db.places.find({
         }
 }
 
+=======================XXXXX======================;
+
+$ geoWithin:operator provided by mongodb, help us to find all element within a certain shape;
+e.g: like polygon;
+
+db.places.find({location:{$geoWithin:{$geometry:{type:"polygon",coordinates:[[p1,p2,p3,p4,p1]]}}}})
+
+# find user weather he/she is inside a specific Area;
+1st step: db.areas.insertOne({name:"Golden Gate Park",area:{type:"Polygon",coordinates:[]}})
+2nd step: db.areas.createIndex({area:"2dsphere"})
+
+# $geoIntersects: return all areas that have a common point/ common area;
+
+db.areas.find({area:{$geoIntersects:{$geometry:{type:"Point",coordinates:[-122.4929,37.76821]}}}})
+
+===================XXXX=====================
+# FInding Places Within a cetain Radius;
+$centerSphere : allow us to get a circle around a point. 
+db.places.find({location:{$geoWithin:{$centerSphere:[[-122.4734,37.7564], 1/6378.1]}}})
 
 
 ===================XXXX===================
